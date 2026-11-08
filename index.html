@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أغلى الحبايب - وردة سحرية</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0c0c0c;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* زرار البداية */
+        .click-btn {
+            padding: 14px 32px;
+            font-size: 20px;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 65, 108, 0.5);
+            transition: 0.3s;
+            z-index: 10;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .click-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 25px rgba(255, 65, 108, 0.8);
+        }
+
+        /* حاوية الوردة */
+        .flower-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* بتلات الوردة (بتتوزع بشكل دائري عشان تعمل شكل الوردة) */
+        .petal {
+            position: absolute;
+            width: 100px;
+            height: 140px;
+            background: linear-gradient(to top, #ff1a53, #ff6685);
+            border-radius: 50% 50% 20% 20%;
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(255, 26, 83, 0.5);
+            transform-origin: bottom center;
+        }
+
+        /* قلب الوردة في المنتصف (مكتوب فيه الكلمة) */
+        .flower-center {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #ffb3c6, #ff3366);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.6s ease-in-out 0.8s; /* تظهر بعد اكتمال بتلات الوردة */
+            box-shadow: 0 0 25px rgba(255, 51, 102, 0.8);
+            z-index: 5;
+            padding: 10px;
+            box-sizing: border-box;
+            line-height: 1.4;
+        }
+
+        /* حالة ظهور الوردة والقلب */
+        .petal.show {
+            opacity: 0.9;
+        }
+
+        .flower-center.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+
+    <button class="click-btn" onclick="openFlower()">اضغط هنا لاكتشاف الهدية 🌹</button>
+    
+    <div class="flower-container" id="flowerContainer">
+        <!-- قلب الوردة اللي مكتوب فيه الجملة -->
+        <div class="flower-center" id="flowerCenter">إلى أغلى الحبايب ❤️</div>
+    </div>
+
+    <script>
+        function openFlower() {
+            const container = document.getElementById('flowerContainer');
+            const centerText = document.getElementById('flowerCenter');
+            
+            // مسح أي بتلات قديمة لو تم الضغط مرة تانية
+            const oldPetals = container.querySelectorAll('.petal');
+            oldPetals.forEach(p => p.remove());
+
+            centerText.classList.remove('show');
+
+            // عدد بتلات الوردة (مثلاً 12 بتلة متوزعة بدائرة كاملة 360 درجة)
+            const totalPetals = 12;
+            
+            for (let i = 0; i < totalPetals; i++) {
+                const angle = (i * 360) / totalPetals; // حساب الزاوية لكل بتلة
+                
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                
+                // تدوير البتلة في مكانها الصحيح بناءً على زاويتها الدائرية
+                petal.style.transform = `rotate(${angle}deg) translateY(-60px) scale(0)`;
+                
+                container.appendChild(petal);
+
+                // حركة تفتح البتلات تدريجياً
+                setTimeout(() => {
+                    petal.classList.add('show');
+                    petal.style.transform = `rotate(${angle}deg) translateY(-60px) scale(1)`;
+                }, i * 70); // سرعة تفتح كل بتلة ورا التانية
+            }
+
+            // إظهار نص "إلى أغلى الحبايب" في المنتصف بعد ما الوردة تتفتح
+            setTimeout(() => {
+                centerText.classList.add('show');
+            }, totalPetals * 70 + 200);
+        }
+    </script>
+
+</body>
+</html>
