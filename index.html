@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love You Heart</title>
+    <title>Love You Heart Animation</title>
     <style>
         body {
             margin: 0;
-            background-color: #0d0d0d;
+            background-color: #0b0b0b;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,7 +30,6 @@
             box-shadow: 0 5px 25px rgba(255, 42, 109, 0.6);
             transition: 0.3s ease;
             z-index: 10;
-            margin-bottom: 20px;
         }
 
         #clickBtn:hover {
@@ -38,85 +37,99 @@
             box-shadow: 0 8px 30px rgba(255, 42, 109, 0.9);
         }
 
-        /* حاوية القلب المتكون من الكلام */
+        /* حاوية القلب */
         #heartContainer {
             position: relative;
             width: 400px;
             height: 400px;
-            display: none; /* مخفي لحد ما يضغط */
+            margin-top: 20px;
         }
 
-        /* الكلمات المتناثرة على شكل قلب */
+        /* الكلمات الفردية */
         .love-word {
             position: absolute;
             color: #ff2a6d;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             white-space: nowrap;
-            text-shadow: 0 0 8px rgba(255, 42, 109, 0.8);
-            animation: fadeIn 1.5s ease-in-out forwards;
+            opacity: 0;
+            transform: scale(0);
+            text-shadow: 0 0 10px rgba(255, 42, 109, 0.9);
+            transition: all 0.4s ease-out;
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0); }
-            100% { opacity: 1; transform: scale(1); }
+        .love-word.show {
+            opacity: 1;
+            transform: scale(1);
         }
     </style>
 </head>
 <body>
 
-    <button id="clickBtn" onclick="revealHeart()">❤️ اضغط هنا يا حب ❤️</button>
+    <button id="clickBtn" onclick="startDrawing()">❤️ اضغط هنا يا حب ❤️</button>
     
     <div id="heartContainer"></div>
 
     <script>
-        function revealHeart() {
-            // اخفاء الزرار بعد الضغط
+        function startDrawing() {
+            // إخفاء الزرار عند الضغط
             document.getElementById('clickBtn').style.display = 'none';
             
             const container = document.getElementById('heartContainer');
-            container.style.display = 'block';
+            container.innerHTML = '';
 
-            // معادلة رسم القلب هندسياً باستخدام تكرار كلمة Love You
-            // المعادلات الرياضية لرسم قلب باستخدام احداثيات (x, y)
-            for (let t = 0; t < Math.PI * 2; t += 0.08) {
-                // معادلة القلب الشهيرة
+            let points = [];
+
+            // 1. حساب إحداثيات القلب الرياضية وتخزينها بالترتيب
+            for (let t = 0; t < Math.PI * 2; t += 0.06) {
                 let x = 16 * Math.pow(Math.sin(t), 3);
                 let y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
 
-                // تكبير وتوسيع الإحداثيات عشان تناسب الشاشة
-                x = x * 15 + 200;
-                y = y * 15 + 180;
-
-                createWord(x, y);
+                x = x * 14 + 200;
+                y = y * 14 + 180;
+                points.push({x, y});
             }
 
-            // طبقات تانية داخلية عشان القلب يطلع مليان ومجسم زي الصورة بالضبط
-            for (let scale = 0.7; scale > 0.2; scale -= 0.15) {
-                for (let t = 0; t < Math.PI * 2; t += 0.12) {
+            // إضافة طبقات جو جوه القلب عشان يبמו مليان زي الصورة
+            for (let scale = 0.8; scale > 0.2; scale -= 0.15) {
+                for (let t = 0; t < Math.PI * 2; t += 0.1) {
                     let x = (16 * Math.pow(Math.sin(t), 3)) * scale;
                     let y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scale;
 
-                    x = x * 15 + 200;
-                    y = y * 15 + 180;
-
-                    createWord(x, y);
+                    x = x * 14 + 200;
+                    y = y * 14 + 180;
+                    points.push({x, y});
                 }
             }
+
+            // خلط النقاط قليلاً أو ترتيب ظهورها ورا بعضها لتعشيق شكل التكوين
+            let index = 0;
+            
+            // 2. رسم الكلمات كلمة ورا كلمة بشكل تدريجي (زي الفيديو)
+            let interval = setInterval(() => {
+                if (index < points.length) {
+                    let p = points[index];
+                    createWord(p.x, p.y, container);
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 25); // سرعة ظهور الكلمات ورا بعض (كل 25 جزء من الألف من الثانية)
         }
 
-        function createWord(x, y) {
+        function createWord(x, y, container) {
             const span = document.createElement('span');
             span.className = 'love-word';
             span.innerText = 'Love You';
             span.style.left = x + 'px';
             span.style.top = y + 'px';
             
-            // تحويل عشوائي بسيط لزاوية الحروف عشان تدي شكل فني ديناميكي
-            let rotation = (Math.random() - 0.5) * 30;
-            span.style.transform = `rotate(${rotation}deg)`;
+            container.appendChild(span);
 
-            document.getElementById('heartContainer').appendChild(span);
+            // تفعيل تأثير الظهور (Animation)
+            setTimeout(() => {
+                span.classList.add('show');
+            }, 10);
         }
     </script>
 
