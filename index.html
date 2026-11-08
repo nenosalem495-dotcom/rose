@@ -3,125 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROAA</title>
+    <title>Love You Heart</title>
     <style>
         body {
-            background-color: #000000;
-            height: 100vh;
+            margin: 0;
+            background-color: #0d0d0d;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            margin: 0;
+            justify-content: center;
+            min-height: 100vh;
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
-        /* زر اضغط هنا نفس شكل الصورة بالضبط */
-        .btn {
-            background: linear-gradient(135deg, #ff2a6d, #ff5e92);
+
+        /* زرار "اضغط هنا يا حب" */
+        #clickBtn {
+            background: linear-gradient(135deg, #ff2a6d, #ff5e99);
             color: white;
-            padding: 16px 45px;
-            font-size: 24px;
             border: none;
+            padding: 15px 40px;
+            font-size: 24px;
+            font-weight: bold;
             border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 0 25px rgba(255, 42, 109, 0.7);
-            font-weight: bold;
-            z-index: 100;
-            transition: 0.3s;
+            box-shadow: 0 5px 25px rgba(255, 42, 109, 0.6);
+            transition: 0.3s ease;
+            z-index: 10;
+            margin-bottom: 20px;
         }
-        .btn:hover {
-            transform: scale(1.08);
+
+        #clickBtn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 42, 109, 0.9);
         }
-        /* حاوية القلب المتداخل بالكلمات */
-        #heart-container {
+
+        /* حاوية القلب المتكون من الكلام */
+        #heartContainer {
             position: relative;
-            width: 300px;
-            height: 280px;
-            display: none;
-            margin-top: 20px;
-            transform: scale(0.9);
-            animation: pulse 1.2s infinite alternate;
+            width: 400px;
+            height: 400px;
+            display: none; /* مخفي لحد ما يضغط */
         }
-        /* تكرار كلمات Love You بشكل مكثف وكبير لملء شكل القلب */
-        .love-matrix {
+
+        /* الكلمات المتناثرة على شكل قلب */
+        .love-word {
             position: absolute;
-            width: 100%;
-            height: 100%;
             color: #ff2a6d;
-            font-size: 11px;
+            font-size: 14px;
             font-weight: bold;
-            line-height: 12px;
-            text-align: center;
-            word-break: break-all;
-            overflow: hidden;
-            opacity: 0.9;
-            text-shadow: 0 0 4px #ff2a6d;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
+            white-space: nowrap;
+            text-shadow: 0 0 8px rgba(255, 42, 109, 0.8);
+            animation: fadeIn 1.5s ease-in-out forwards;
         }
-        /* اسم ROAA اللي هيظهر جوه القلب في الآخر */
-        #roaa-name {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #ffffff;
-            font-size: 34px;
-            font-weight: bold;
-            z-index: 50;
-            display: none;
-            text-shadow: 0 0 10px #000, 0 0 20px #ff2a6d, 0 0 30px #ff2a6d;
-        }
-        @keyframes pulse {
-            0% { transform: scale(0.9); }
-            100% { transform: scale(1.05); }
-        }
-        /* اهتزاز الشاشة */
-        @keyframes shake {
-            0% { transform: translate(2px, 2px) rotate(0deg); }
-            20% { transform: translate(-4px, 0px) rotate(-1deg); }
-            40% { transform: translate(4px, -2px) rotate(1deg); }
-            60% { transform: translate(-2px, 2px) rotate(0deg); }
-            80% { transform: translate(2px, -2px) rotate(-1deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-        .shake-screen {
-            animation: shake 0.4s ease;
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0); }
+            100% { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
 <body>
 
-    <!-- زر البداية -->
-    <button class="btn" id="startBtn" onclick="revealHeart()">❤️ اضغط هنا يا حب</button>
-
-    <!-- شكل القلب والكلمات -->
-    <div id="heart-container">
-        <div class="love-matrix" id="matrixText"></div>
-        <div id="roaa-name">ROAA ✨</div>
-    </div>
+    <button id="clickBtn" onclick="revealHeart()">❤️ اضغط هنا يا حب ❤️</button>
+    
+    <div id="heartContainer"></div>
 
     <script>
         function revealHeart() {
-            // إخفاء الزر
-            document.getElementById('startBtn').style.display = 'none';
+            // اخفاء الزرار بعد الضغط
+            document.getElementById('clickBtn').style.display = 'none';
             
-            // توليد كلمات Love You متكررة بكثافة لملء الشاشة والقلب
-            const textBlock = "Love You ".repeat(150);
-            document.getElementById('matrixText').innerText = textBlock;
+            const container = document.getElementById('heartContainer');
+            container.style.display = 'block';
 
-            // إظهار القلب
-            document.getElementById('heart-container').style.display = 'block';
+            // معادلة رسم القلب هندسياً باستخدام تكرار كلمة Love You
+            // المعادلات الرياضية لرسم قلب باستخدام احداثيات (x, y)
+            for (let t = 0; t < Math.PI * 2; t += 0.08) {
+                // معادلة القلب الشهيرة
+                let x = 16 * Math.pow(Math.sin(t), 3);
+                let y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
 
-            // اهتزاز الشاشة وإظهار اسم ROAA
-            setTimeout(() => {
-                document.body.classList.add('shake-screen');
-                document.getElementById('roaa-name').style.display = 'block';
-            }, 350);
+                // تكبير وتوسيع الإحداثيات عشان تناسب الشاشة
+                x = x * 15 + 200;
+                y = y * 15 + 180;
+
+                createWord(x, y);
+            }
+
+            // طبقات تانية داخلية عشان القلب يطلع مليان ومجسم زي الصورة بالضبط
+            for (let scale = 0.7; scale > 0.2; scale -= 0.15) {
+                for (let t = 0; t < Math.PI * 2; t += 0.12) {
+                    let x = (16 * Math.pow(Math.sin(t), 3)) * scale;
+                    let y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scale;
+
+                    x = x * 15 + 200;
+                    y = y * 15 + 180;
+
+                    createWord(x, y);
+                }
+            }
+        }
+
+        function createWord(x, y) {
+            const span = document.createElement('span');
+            span.className = 'love-word';
+            span.innerText = 'Love You';
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            
+            // تحويل عشوائي بسيط لزاوية الحروف عشان تدي شكل فني ديناميكي
+            let rotation = (Math.random() - 0.5) * 30;
+            span.style.transform = `rotate(${rotation}deg)`;
+
+            document.getElementById('heartContainer').appendChild(span);
         }
     </script>
+
 </body>
 </html>
