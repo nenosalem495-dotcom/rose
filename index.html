@@ -6,7 +6,7 @@
     <title>ROAA</title>
     <style>
         body {
-            background-color: #000;
+            background-color: #0b0b0b;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -16,108 +16,144 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
+        /* زر اضغط هنا نفس شكل الصورة */
         .btn {
-            background-color: #ff2a6d;
+            background: linear-gradient(135deg, #ff2a6d, #ff5e92);
             color: white;
-            padding: 15px 35px;
-            font-size: 22px;
+            padding: 16px 40px;
+            font-size: 24px;
             border: none;
-            border-radius: 30px;
+            border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 0 20px #ff2a6d;
+            box-shadow: 0 0 25px rgba(255, 42, 109, 0.6);
             font-weight: bold;
             z-index: 100;
             transition: 0.3s;
+            margin-bottom: 20px;
         }
         .btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
-        #heart-matrix {
-            position: absolute;
-            font-family: monospace;
-            font-size: 14px;
-            line-height: 12px;
-            color: #ff2a6d;
-            text-align: center;
+        /* حاوية القلب المصنوع من الكلمات */
+        #love-heart {
+            position: relative;
+            width: 320px;
+            height: 300px;
             display: none;
-            text-shadow: 0 0 8px #ff2a6d;
+            transform: scale(0.8);
+            animation: pulseHeart 1.5s infinite alternate;
         }
-        #roaa-text {
+        /* تصميم القلب الحقيقي بال CSS والكلمات المتداخلة بداخله */
+        .heart-shape {
             position: absolute;
-            color: white;
-            font-size: 35px;
+            width: 200px;
+            height: 200px;
+            background-color: #ff2a6d;
+            transform: rotate(45deg);
+            top: 40px;
+            left: 60px;
+            box-shadow: 0 0 40px #ff2a6d, 0 0 80px #ff2a6d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .heart-shape::before,
+        .heart-shape::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: #ff2a6d;
+            border-radius: 50%;
+        }
+        .heart-shape::before {
+            top: -100px;
+            left: 0;
+        }
+        .heart-shape::after {
+            left: -100px;
+            top: 0;
+        }
+        /* كلمات Love You المتكررة جوه القلب عشان تطابق الصورة */
+        .love-text-bg {
+            position: absolute;
+            width: 350px;
+            color: #ff8da1;
+            font-size: 13px;
             font-weight: bold;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px #ff2a6d, 0 0 25px #ff2a6d, 0 0 35px #ff2a6d;
-            display: none;
-            z-index: 50;
+            line-height: 14px;
             text-align: center;
+            transform: rotate(-45deg);
+            z-index: 10;
+            opacity: 0.85;
+            text-shadow: 0 0 3px #ff2a6d;
         }
+        /* اسم ROAA اللي هيظهر جوه القلب في الآخر والشاشة تتهز */
+        #roaa-name {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: bold;
+            z-index: 20;
+            display: none;
+            text-shadow: 0 0 10px #000, 0 0 20px #ff2a6d, 0 0 30px #ff2a6d;
+        }
+        @keyframes pulseHeart {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1.05); }
+        }
+        /* اهتزاز الشاشة */
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
             20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
+            40% { transform: translate(3px, 2px) rotate(0deg); }
+            60% { transform: translate(-1px, -1px) rotate(1deg); }
+            80% { transform: translate(1px, 2px) rotate(0deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
         }
         .shake-screen {
-            animation: shake 0.5s ease;
+            animation: shake 0.4s ease;
         }
     </style>
 </head>
 <body>
 
-    <button class="btn" id="startBtn" onclick="startAnimation()">❤️ اضغط هنا</button>
+    <!-- زر البداية بنفس الستايل -->
+    <button class="btn" id="startBtn" onclick="showLove()">❤️ اضغط هنا يا حب</button>
 
-    <div id="heart-matrix"></div>
-
-    <div id="roaa-text">ROAA ✨</div>
+    <!-- شكل القلب وتكوينه -->
+    <div id="love-heart">
+        <div class="heart-shape"></div>
+        <div class="love-text-bg">
+            Love You Love You Love You Love You<br>
+            Love You Love You Love You Love You<br>
+            Love You Love You Love You Love You<br>
+            Love You Love You Love You Love You<br>
+            Love You Love You Love You Love You<br>
+            Love You Love You Love You Love You<br>
+            Love You Love You Love You Love You
+        </div>
+        <div id="roaa-name">ROAA ✨</div>
+    </div>
 
     <script>
-        function startAnimation() {
+        function showLove() {
+            // إخفاء الزرار
             document.getElementById('startBtn').style.display = 'none';
             
-            const matrixDiv = document.getElementById('heart-matrix');
-            matrixDiv.style.display = 'block';
+            // إظهار القلب
+            const heart = document.getElementById('love-heart');
+            heart.style.display = 'block';
 
-            const heartShape = [
-                "   1234567890123   ",
-                " 12345678901234567 ",
-                "1234567890123456789",
-                "1234567890123456789",
-                " 12345678901234567 ",
-                "  123456789012345  ",
-                "    12345678903    ",
-                "      1234567      ",
-                "        123        ",
-                "         1         "
-            ];
-
-            let currentLines = [];
-            let index = 0;
-
-            let interval = setInterval(() => {
-                if (index < heartShape.length) {
-                    let randomizedLine = heartShape[index].replace(/[0-9]/g, () => Math.floor(Math.random() * 10));
-                    currentLines.push(randomizedLine);
-                    matrixDiv.innerHTML = currentLines.join("<br>");
-                    index++;
-                } else {
-                    clearInterval(interval);
-                    
-                    document.body.classList.add('shake-screen');
-
-                    setTimeout(() => {
-                        document.getElementById('roaa-text').style.display = 'block';
-                    }, 400);
-                }
-            }, 150);
+            // اهتزاز الشاشة وإظهار اسم ROAA بعد جزء من الثانية
+            setTimeout(() => {
+                document.body.classList.add('shake-screen');
+                document.getElementById('roaa-name').style.display = 'block';
+            }, 300);
         }
     </script>
 </body>
